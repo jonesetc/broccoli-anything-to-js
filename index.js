@@ -50,20 +50,20 @@ ToJSFilter.prototype.processString = function (string) {
         var lines = string.split('\n');
 
         // Build the output string
-        var combined = "export default ";
+        var combined = "export default [";
         for (var i = 0; i < lines.length; i++) {
-            combined += "'" + lines[i] + "' +\n";
+            combined += "'" + lines[i] + "',\n";
         }
 
         // We need to remove the last addition if there were any lines
         // If there were no lines then we need to insert and empty string
-        if (combined.lastIndexOf(" +\n") === combined.length - " +\n".length) {
-            combined = combined.slice(0,-(" +\n".length));
+        if (combined.lastIndexOf(",\n") === combined.length - ",\n".length) {
+            combined = combined.slice(0,-(",\n".length));
         } else {
             combined += "''";
         }
 
-        combined += ";\n";
+        combined += "].join('\\n');\n";
 
         return combined;
     } catch (err) {
