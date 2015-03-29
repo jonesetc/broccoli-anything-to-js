@@ -1,4 +1,5 @@
 var Filter = require('broccoli-filter');
+var detect = require('detect-line-endings')
 
 /**
  * Escape strings where needed
@@ -42,28 +43,30 @@ ToJSFilter.prototype.processString = function (string) {
     // Error handling code taken from:
     // https://github.com/joliss/broccoli-coffee/blob/0d6bf64bfbd977c72bbc9558744861f95d9e798f/index.js#L23-L29
     try {
+        // First we'll find out what the line endings are, default to \n
+        var EOL = (detect(string) || { EOL: '\n' }).EOL;
         // Clean up the string and then split it
         if (this.trimFiles) {
             string = string.trim();
         }
         string = addSlashes(string);
-        var lines = string.split('\n');
+        var lines = string.split(EOL);
 
         // Build the output string
         var combined = "export default [";
         for (var i = 0; i < lines.length; i++) {
-            combined += "'" + lines[i] + "',\n";
+            combined += "'" + lines[i] + "'," + EOL;
         }
 
         // We need to remove the last addition if there were any lines
         // If there were no lines then we need to insert and empty string
-        if (combined.lastIndexOf(",\n") === combined.length - ",\n".length) {
-            combined = combined.slice(0,-(",\n".length));
+        if (combined.lastIndexOf("," + EOL) === combined.length - ("," + EOL).length) {
+            combined = combined.slice(0,-(("," + EOL).length));
         } else {
             combined += "''";
         }
 
-        combined += "].join('\\n');\n";
+        combined += "].join('\\n');" + EOL;
 
         return combined;
     } catch (err) {

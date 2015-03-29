@@ -1,6 +1,6 @@
 {
   "name": "broccoli-anything-to-js",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Embed any type of file into a valid JS module, exporting the original file's contents as a string.",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/jonesetc/broccoli-anything-to-js",
   "dependencies": {
     "broccoli": "^0.15.0",
-    "broccoli-filter": "^0.1.12"
+    "broccoli-filter": "^0.1.12",
+    "detect-line-endings": "0.0.2"
   }
 }
